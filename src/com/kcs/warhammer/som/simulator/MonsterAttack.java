@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
-public class MonstarAttack {
+public class MonsterAttack {
 
 	private static Random generator = new Random(new Date().getTime());
 	private static Scanner scanner = new Scanner(System.in);
@@ -13,6 +13,7 @@ public class MonstarAttack {
 	private static int ITERATIONS = 10000;
 	private static int WALLTOUGHNESS = 8;
 	private static int wallWounds = 20;
+	private static int totalWoundsInflicted = 0;
 	
 	private static String readLine(){
 		System.out.print(":");
@@ -68,6 +69,7 @@ public class MonstarAttack {
 				   (STdiff < -1 && toWoundRoll >= 2)){
 					if(!wardSave()){
 						wallWounds --;
+						totalWoundsInflicted ++;
 					}
 				}
 			}
@@ -76,7 +78,6 @@ public class MonstarAttack {
 	
 	public static void main(String[] args) {
 		int attackerVictory = 0;
-		int turn = 1;
 		
 		System.out.println("Welcome to the monster simulator.");
 		
@@ -84,6 +85,7 @@ public class MonstarAttack {
 		
 		for(int iteration = 0; iteration < ITERATIONS; iteration++){
 			wallWounds = 20;
+			int turn = 1;
 
 			while(wallWounds > 0 && turn < 7){
 				monstersAttack();
@@ -96,11 +98,12 @@ public class MonstarAttack {
 				System.out.println("Attackers fail!  Wounds remaining:" + wallWounds);	
 			}
 			else{
-				System.out.println("The wall has been breached in " + (turn + 1) + " turns!");
+				System.out.println("The wall has been breached in " + turn + " turns!");
 			}
 		}
 
 		System.out.println("Attackers win " + attackerVictory/100 + "% of the time in " + ITERATIONS + " iterations.");
+		System.out.println("Average wounds per game: " + totalWoundsInflicted/ITERATIONS);
 	}
 	
 	private static boolean wardSave(){
